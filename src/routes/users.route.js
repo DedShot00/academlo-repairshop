@@ -23,6 +23,6 @@ router
   .route('/:id')
   .get(usersController.getUserById)
   .patch(authMiddleware.protectAccountOwner, validationsMiddleware.updateUser, usersController.updateUser)
-  .delete(usersController.deleteUser);
+  .delete(authMiddleware.protectAccountOwner, usersController.deleteUser);
 
 module.exports = router;
