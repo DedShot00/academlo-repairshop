@@ -9,8 +9,16 @@ const Repair = db.define("repairs", {
     allowNull: false,
   },
   date: {
-    type: DataTypes.STRING(10),
+    type: DataTypes.DATE,
     allowNull: false,
+  },
+  motorsNumber: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  description: {
+    type: DataTypes.TEXT,
+    allowNull: false
   },
   status: {
     type: DataTypes.STRING(20),

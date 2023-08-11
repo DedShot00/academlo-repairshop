@@ -1,19 +1,28 @@
-const express = require("express");
+const express = require('express');
+
+//* Middleware
+const authMiddleware = require('../middlewares/auth.middleware');
+const validationsMiddleware = require('../middlewares/validations.middleware');
+const userMiddleware = require('../middlewares/user.middleware');
 
 //* controller
-const usersController = require('../controllers/users.controller')
+const usersController = require('../controllers/users.controller');
 
-const router = express.Router()
+const router = express.Router();
+
+router.get('/login', validationsMiddleware.login, usersController.login);
 
 router
   .route('/')
-  .get(usersController.getUsers)
-  .post(usersController.createUser)
+  .get(authMiddleware.protect, usersController.getUsers)
+  .post(validationsMiddleware.createUser, usersController.createUser);
 
+router.use(authMiddleware.protect);
 router
+  .use('/:id', userMiddleware.validUser)
   .route('/:id')
   .get(usersController.getUserById)
-  .patch(usersController.updateUser)
-  .delete(usersController.deleteUser)
+  .patch(authMiddleware.protectAccountOwner, validationsMiddleware.updateUser, usersController.updateUser)
+  .delete(usersController.deleteUser);
 
-module.exports = router
+module.exports = router;
